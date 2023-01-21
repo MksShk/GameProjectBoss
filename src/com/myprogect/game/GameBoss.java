@@ -17,12 +17,12 @@ public class GameBoss extends JFrame {
     private static int DamageMe = 1;
     private static int DamageBoss = 2;
     private static int Price = 2;
-    Action action = new Action();
 
     public static void main(String[] args) {
         new GameBoss();
     }
         private GameBoss() {
+        Action action = new Action();
         unitFrame();
         setLayout(null);
         b1 = new JButton("Ударить");
