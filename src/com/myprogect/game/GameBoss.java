@@ -6,120 +6,153 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameBoss extends JFrame {
-    private static JButton b1,b2;
-    private static JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9,l10;
-    private static String nameBoss = "Гавкошмыг";
-    private static String nameMe  = JOptionPane.showInputDialog("Введи свое имя, воин");
-    private static String q,w,b,r,t,y,u,i;
-    private static int HpMe = 10;
-    private static int HpBoss = 45;
-    private static int Money = 0;
-    private static int DamageMe = 1;
-    private static int DamageBoss = 2;
-    private static int Price = 2;
+    private JButton btnHit, btnUpgrade, btnQuit;
+    private JLabel lblPlayerName, lblBossName, lblBossHP,lblPlayerHp, lblPlayerDamage, lblPlayerMoney, lblGameResult, lblNotification;
+    private String nameBoss = "Гавкошмыг";
+    private String nameMe  = JOptionPane.showInputDialog("Введи свое имя, воин");
+    private ImageIcon backgroundImage = new ImageIcon("res/PhoneGra.jpg");
+    private ImageIcon bossImage = new ImageIcon("res/Boss.png");
+    private ImageIcon moneyImage = new ImageIcon("res/Monetka.png");
+    private ImageIcon paperImage = new ImageIcon("res/Bumaga.png");
+    private ImageIcon hitImage = new ImageIcon("res/hit.png");
+    private ImageIcon upgradeImage = new ImageIcon("res/upgrade.png");
+    private ImageIcon quitImage = new ImageIcon("res/quit.png");
+    private int HpMe = 10;
+    private int HpBoss = 45;
+    private int Money = 0;
+    private int DamageMe = 1;
+    private int DamageBoss = 2;
+    private int Price = 2;
+
+    private boolean gameOver = false;
 
     public static void main(String[] args) {
         new GameBoss();
     }
-        private GameBoss() {
+
+    private GameBoss() {
         Action action = new Action();
         unitFrame();
-        setLayout(null);
-        b1 = new JButton("Ударить");
-        b1.setBounds(40,290,170,60);
-        b2 = new JButton("Прокачать");
-        b2.setBounds(40,360,170,60);
-        l1 = new JLabel(nameMe);
-        l1.setBounds(30,10,130,50);
-        l2 = new JLabel(nameBoss);
-        l2.setBounds(650,10,130,50);
-        l3 = new JLabel("");
-        l3.setBounds(170,150,300,60);
-        l4 = new JLabel("");
-        l4.setBounds(170,170,300,60);
-        l5 = new JLabel("");
-        l5.setBounds(170,190,300,60);
-        l6 = new JLabel("");
-        l6.setBounds(170,210,300,60);
-        l7 = new JLabel("");
-        l7.setBounds(170,230,300,60);
-        l8 = new JLabel("");
-        l8.setBounds(170,250,300,60);
-        l9 = new JLabel("");
-        l9.setBounds(170,270,300,60);
-        l10 = new JLabel("");
-        l10.setBounds(170,390,300,60);
-        add(b1);
-        add(b2);
-        add(l1);
-        add(l2);
-        add(l3);
-        add(l4);
-        add(l5);
-        add(l6);
-        add(l7);
-        add(l8);
-        add(l9);
-        add(l10);
 
-        b1.addActionListener(action);
-        b2.addActionListener(action);
-        }
-        private void unitFrame() {
+        JLabel background = new JLabel(backgroundImage);
+        setContentPane(background);
+        background.setLayout(null);
+
+        JLabel bossIcon = new JLabel(bossImage);
+        bossIcon.setBounds(415, 55, 350, 500);
+
+        JLabel moneyIcon = new JLabel(moneyImage);
+        moneyIcon.setBounds(10, 10, 50, 50);
+
+        JLabel paperIcon = new JLabel(paperImage);
+        paperIcon.setBounds(-27, 75, 400, 400);
+
+        btnHit = new JButton(hitImage);
+        btnHit.setBounds(75, 240, 190, 45);
+        btnUpgrade = new JButton(upgradeImage);
+        btnUpgrade.setBounds(75, 290, 190, 45);
+        btnQuit = new JButton(quitImage);
+        btnQuit.setBounds(75, 340, 190, 45);
+
+        lblPlayerName = new JLabel(nameMe);
+        lblPlayerName.setBounds(138, 120, 130, 50);
+        lblPlayerName.setFont(new Font("Arial", Font.BOLD, 20));
+
+        lblBossName = new JLabel(nameBoss);
+        lblBossName.setBounds(530, 535, 130, 50);
+        lblBossName.setFont(new Font("Arial", Font.BOLD, 20));
+
+        lblBossHP = new JLabel("");
+        lblBossHP.setBounds(533, 20, 300, 60);
+        lblBossHP.setFont(new Font("Arial", Font.BOLD, 30));
+
+        lblPlayerDamage = new JLabel("");
+        lblPlayerDamage.setBounds(65, 170, 300, 60);
+        lblPlayerDamage.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblPlayerMoney = new JLabel("");
+        lblPlayerMoney.setBounds(65,6, 300, 60);
+        lblPlayerMoney.setFont(new Font("Arial", Font.BOLD, 20));
+
+        lblPlayerHp = new JLabel("");
+        lblPlayerHp.setBounds(65, 145, 300, 60);
+        lblPlayerHp.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblGameResult = new JLabel("");
+        lblGameResult.setBounds(75, 490, 300, 60);
+        lblGameResult.setFont(new Font("Arial", Font.BOLD, 14));
+
+        lblNotification = new JLabel("Уведомления:");
+        lblNotification.setBounds(38, 460, 300, 60);
+        lblNotification.setFont(new Font("Arial", Font.BOLD, 18));
+
+        background.add(btnHit);
+        background.add(btnUpgrade);
+        background.add(btnQuit);
+        background.add(lblPlayerName);
+        background.add(lblBossName);
+        background.add(lblBossHP);
+        background.add(lblPlayerDamage);
+        background.add(lblPlayerMoney);
+        background.add(lblPlayerHp);
+        background.add(lblGameResult);
+        background.add(lblNotification);
+        background.add(paperIcon);
+        background.add(moneyIcon);
+        background.add(bossIcon);
+
+        btnHit.addActionListener(action);
+        btnUpgrade.addActionListener(action);
+        btnQuit.addActionListener(action);
+    }
+    private void unitFrame() {
         setTitle("KillTheBoss");
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(800,650);
         setLocationRelativeTo(null);
         setResizable(false);
-        }
-        public class Action implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    }
 
-                while (true) {
-                    if (e.getSource() == b1) {
+    public class Action implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+                if (e.getSource() == btnHit) {
+                    if (!gameOver) {
                         HpBoss -= DamageMe;
                         Money++;
-                        q = "У " + nameBoss + " осталось " + HpBoss + " здоровья";
-                        w = "Твой баланс " + Money;
-                        l3.setText(q);
-                        l4.setText(w);
-                        if (HpBoss <= 0) {
-                            b  = "Ты убил босса";
-                            l5.setText(b);
-                            break;
-                        }
-
+                        lblBossHP.setText("HP: " + HpBoss);
+                        lblPlayerMoney.setText(""+ Money);
                         HpMe -= DamageBoss;
-                        r = nameMe + " Теперь у тебя " + HpMe + " здоровья";
-                        l6.setText(r);
-                        if (HpMe <= 0) {
-                            t = "Тебя убил босс и ты возродился";
-                            l7.setText(t);
-                            HpMe = 10;
-                        }
+                        lblPlayerHp.setText("Здоровье: " + HpMe);
+                        checkGameOver();
                     }
-                    if (e.getSource() == b2) {
-                        if (Money >= Price) {
-                            DamageMe++;
-                            Money = Money - Price;
-                            y = "Ты прокачал свой урон за " + Price + " Теперь твой баланс равен " + Money;
-                            u = "Нынешний урон: " + DamageMe;
-                            l8.setText(y);
-                            l9.setText(u);
-                            Price *=2;
-                        } else  {
-                            i = "У тебя недостаточно денег";
-                            l10.setText(i);
-                     }
-                 }
-             }
-         }
+                } else if (e.getSource() == btnUpgrade) {
+                    if (!gameOver && Money >= Price) {
+                        DamageMe++;
+                        Money -= Price;
+                        lblPlayerDamage.setText("Твой урон: " + DamageMe);
+                        lblPlayerMoney.setText("" + Money);
+                        Price *=2;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Недостаточно денег");
+                    }
+                } else if (e.getSource() == btnQuit) {
+                    int confirm = JOptionPane.showConfirmDialog(null, "Ты уверн, что хочешь выйти из игры?", "Выход", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
+            }
+        }
+    }
+    private void checkGameOver() {
+        if (HpBoss <= 0) {
+            lblGameResult.setText("Ты победил получается");
+            gameOver = true;
+        } else if (HpMe <= 0) {
+            lblGameResult.setText("<html>Тебя нахлабучил Гавкошмыг <br> и ты возродился</html>");
+            HpMe = 10;
+        }
     }
 }
-
-
-
-
-
