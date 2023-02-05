@@ -164,8 +164,7 @@ public class GameBoss extends JFrame {
                                     + System.lineSeparator() + "- Ты можешь увеличить урон, нажав Прокачать"
                                     + System.lineSeparator() + "- Начальная стоимость прокачки - 2 монеты, последующуя в два раза дороже предыдущей"
                                     + System.lineSeparator() + System.lineSeparator() + "P.S Будь осторожней, ведь босс бьет тебя в ответ", "Информация",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                            null, null, null);
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
                 }
         }
     }
