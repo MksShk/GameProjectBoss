@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 public class GameBoss extends JFrame {
     private JButton btnHit, btnUpgrade, btnQuit,btnInfo;
     private JLabel lblPlayerName, lblBossName, lblBossHP,lblPlayerHp, lblPlayerDamage, lblPlayerMoney, lblGameResult, lblNotification;
-    private String nameBoss = "Гавкошмыг";
-    private String nameMe  = JOptionPane.showInputDialog("Введи свое имя, воин");
     private ImageIcon backgroundImage = new ImageIcon("res/PhoneGra.jpg");
     private ImageIcon bossImage = new ImageIcon("res/Boss.png");
     private ImageIcon moneyImage = new ImageIcon("res/Monetka.png");
@@ -18,14 +16,10 @@ public class GameBoss extends JFrame {
     private ImageIcon upgradeImage = new ImageIcon("res/upgrade.png");
     private ImageIcon quitImage = new ImageIcon("res/quit.png");
     private ImageIcon infoImage = new ImageIcon("res/info.png");
-    private int HpMe = 10;
-    private int HpBoss = 20;
     private int Money = 0;
-    private int DamageMe = 1;
-    private int DamageBoss = 2;
-    private int HealthPotionPrice = 5;
-    private int UpgradePrice = 10;
     private int Price = 2;
+    private GameCharacters player = new GameCharacters(JOptionPane.showInputDialog("Введи свое имя, воин"),10,1);
+    private GameCharacters boss = new GameCharacters("Гавкошмыг",20,2);
 
     private boolean gameOver = false;
 
@@ -75,11 +69,11 @@ public class GameBoss extends JFrame {
         btnQuit = new JButton(quitImage);
         btnQuit.setBounds(75, 340, 190, 45);
 
-        lblPlayerName = new JLabel(nameMe);
+        lblPlayerName = new JLabel(player.name);
         lblPlayerName.setBounds(138, 120, 130, 50);
         lblPlayerName.setFont(new Font("Arial", Font.BOLD, 20));
 
-        lblBossName = new JLabel(nameBoss);
+        lblBossName = new JLabel(boss.name);
         lblBossName.setBounds(530, 535, 130, 50);
         lblBossName.setFont(new Font("Arial", Font.BOLD, 20));
 
@@ -130,24 +124,24 @@ public class GameBoss extends JFrame {
             updateLabels();
                 if (e.getSource() == btnHit) {
                     if (!gameOver) {
-                        HpBoss -= DamageMe;
+                        boss.hp -= player.damage;
                         Money++;
-                        lblBossHP.setText("HP: " + HpBoss);
+                        lblBossHP.setText("HP: " + boss.hp);
                         lblPlayerMoney.setText(""+ Money);
-                        HpMe -= DamageBoss;
-                        lblPlayerHp.setText("Здоровье: " + HpMe);
+                        player.hp -= boss.damage;
+                        lblPlayerHp.setText("Здоровье: " + player.hp);
                         checkGameOver();
                     }
 
                 } else if (e.getSource() == btnUpgrade) {
-                    if (!gameOver && Money >= Price && DamageMe < 5) {
-                        DamageMe++;
+                    if (!gameOver && Money >= Price && player.damage < 5) {
+                        player.damage++;
                         Money -= Price;
-                        lblPlayerDamage.setText("Твой урон: " + DamageMe);
+                        lblPlayerDamage.setText("Твой урон: " + player.damage);
                         lblPlayerMoney.setText("" + Money);
                         Price *=2;
                         lblGameResult.setText("Ты увеличил свой урон на : 1");
-                    } else if (DamageMe >= 5) {
+                    } else if (player.damage >= 5) {
                         JOptionPane.showMessageDialog(null, "Урон максимален");
                     } else {
                         JOptionPane.showMessageDialog(null, "Недостаточно денег");
@@ -169,8 +163,8 @@ public class GameBoss extends JFrame {
         }
     }
     private void checkGameOver() {
-        if ( HpBoss <=0) {
-            HpBoss = 0;
+        if (boss.hp <=0) {
+            boss.hp = 0;
             updateLabels();
             lblGameResult.setText("Ты победил получается");
             gameOver = true;
@@ -181,18 +175,18 @@ public class GameBoss extends JFrame {
                 System.exit(0);
             }
         }
-        if (HpMe <= 0) {
-            lblGameResult.setText("<html>Тебя нахлабучил " + nameBoss +  " <br> и ты возродился</html>");
-            HpBoss = 20 + DamageMe;
-            HpMe = 10 + DamageBoss;
+        if (player.hp <= 0) {
+            lblGameResult.setText("<html>Тебя нахлабучил " + boss.name +  " <br> и ты возродился</html>");
+            boss.hp = 20 + player.damage;
+            player.hp = 10 + boss.damage;
         }
     }
 
     private void updateLabels() { //Обновление информации
         lblPlayerMoney.setText("" + Money);
-        lblPlayerHp.setText("Здоровье: " + HpMe);
-        lblPlayerDamage.setText("Твой урон: " + DamageMe);
-        lblBossHP.setText("HP: " + HpBoss);
+        lblPlayerHp.setText("Здоровье: " + player.hp);
+        lblPlayerDamage.setText("Твой урон: " + player.damage);
+        lblBossHP.setText("HP: " + boss.hp);
         lblGameResult.setText("");
     }
 }
