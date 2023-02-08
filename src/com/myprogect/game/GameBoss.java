@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class GameBoss extends JFrame {
     private JButton btnHit, btnUpgrade, btnQuit,btnInfo;
     private JLabel lblPlayerName, lblBossName, lblBossHP,lblPlayerHp, lblPlayerDamage, lblPlayerMoney, lblGameResult, lblNotification;
@@ -122,46 +123,62 @@ public class GameBoss extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             updateLabels();
-                if (e.getSource() == btnHit) {
-                    if (!gameOver) {
-                        boss.hp -= player.damage;
-                        Money++;
-                        lblBossHP.setText("HP: " + boss.hp);
-                        lblPlayerMoney.setText(""+ Money);
-                        player.hp -= boss.damage;
-                        lblPlayerHp.setText("Здоровье: " + player.hp);
-                        checkGameOver();
-                    }
-
-                } else if (e.getSource() == btnUpgrade) {
-                    if (!gameOver && Money >= Price && player.damage < 5) {
-                        player.damage++;
-                        Money -= Price;
-                        lblPlayerDamage.setText("Твой урон: " + player.damage);
-                        lblPlayerMoney.setText("" + Money);
-                        Price *=2;
-                        lblGameResult.setText("Ты увеличил свой урон на : 1");
-                    } else if (player.damage >= 5) {
-                        JOptionPane.showMessageDialog(null, "Урон максимален");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Недостаточно денег");
-                    }
-                }  else if (e.getSource() == btnQuit) {
-                    int confirm = JOptionPane.showConfirmDialog(null, "Ты уверн, что хочешь выйти из игры?", "Выход", JOptionPane.YES_NO_OPTION);
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-                    }
-                } else if (e.getSource() == btnInfo) {
-                    JOptionPane.showOptionDialog(GameBoss.this,
-                            "Цель: Убить Босса" + System.lineSeparator() +
-                                    "- За каждый удар тебе дается по 1 монете"
-                                    + System.lineSeparator() + "- Ты можешь увеличить урон, нажав Прокачать"
-                                    + System.lineSeparator() + "- Начальная стоимость прокачки - 2 монеты, последующуя в два раза дороже предыдущей"
-                                    + System.lineSeparator() + System.lineSeparator() + "P.S Будь осторожней, ведь босс бьет тебя в ответ", "Информация",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-                }
+            Object obj = e.getSource();
+            if (obj == btnHit) {
+                hit();
+            } else if (obj == btnUpgrade) {
+                upgrade();
+            }  else if (obj == btnQuit) {
+               quit();
+            } else if (obj == btnInfo) {
+                info();
+            }
         }
     }
+    private void hit() {
+        if (!gameOver) {
+            boss.hp -= player.damage;
+            Money++;
+            lblBossHP.setText("HP: " + boss.hp);
+            lblPlayerMoney.setText(""+ Money);
+            player.hp -= boss.damage;
+            lblPlayerHp.setText("Здоровье: " + player.hp);
+            checkGameOver();
+        }
+    }
+
+    private void upgrade() {
+        if (!gameOver && Money >= Price && player.damage < 5) {
+            player.damage++;
+            Money -= Price;
+            lblPlayerDamage.setText("Твой урон: " + player.damage);
+            lblPlayerMoney.setText("" + Money);
+            Price *=2;
+            lblGameResult.setText("Ты увеличил свой урон на : 1");
+        } else if (player.damage >= 5) {
+            JOptionPane.showMessageDialog(null, "Урон максимален");
+        } else {
+            JOptionPane.showMessageDialog(null, "Недостаточно денег");
+        }
+    }
+
+    private void quit() {
+        int confirm = JOptionPane.showConfirmDialog(null, "Ты уверн, что хочешь выйти из игры?", "Выход", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+
+    private void info() {
+        JOptionPane.showOptionDialog(GameBoss.this,
+                "Цель: Убить Босса" + System.lineSeparator() +
+                        "- За каждый удар тебе дается по 1 монете"
+                        + System.lineSeparator() + "- Ты можешь увеличить урон, нажав Прокачать"
+                        + System.lineSeparator() + "- Начальная стоимость прокачки - 2 монеты, последующуя в два раза дороже предыдущей"
+                        + System.lineSeparator() + System.lineSeparator() + "P.S Будь осторожней, ведь босс бьет тебя в ответ", "Информация",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    }
+
     private void checkGameOver() {
         if (boss.hp <=0) {
             boss.hp = 0;
