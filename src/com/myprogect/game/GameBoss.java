@@ -17,15 +17,18 @@ public class GameBoss extends JFrame {
     private ImageIcon upgradeImage = new ImageIcon("res/upgrade.png");
     private ImageIcon quitImage = new ImageIcon("res/quit.png");
     private ImageIcon infoImage = new ImageIcon("res/info.png");
-    private int Money = 0;
+    private int Money = 10;
     private int Price = 2;
     private GameCharacters player = new GameCharacters(JOptionPane.showInputDialog("Введи свое имя, воин"),10,1);
     private GameCharacters boss = new GameCharacters("Гавкошмыг",20,2);
 
     private boolean gameOver = false;
 
+    static FightManager fightManager;
+
     public static void main(String[] args) {
         new GameBoss();
+        fightManager = new FightManager();
     }
 
     private GameBoss() {
@@ -122,14 +125,21 @@ public class GameBoss extends JFrame {
     public class Action extends Component implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            updateLabels();
             Object obj = e.getSource();
             if (obj == btnHit) {
-                hit();
+                if (!fightManager.getBattleStatus()) {
+                    fightManager.startNewBattle(new Hero(), new Boss());
+                }
+                fightManager.runBattleRound();
+                lblGameResult.setText(fightManager.getBattleResult().getMessage());
+                lblBossHP.setText("HP: " + fightManager.getC2().sayHealthPointStatus());
+                lblPlayerHp.setText("Здоровье: " + fightManager.getC1().sayHealthPointStatus());
+                // hit();
             } else if (obj == btnUpgrade) {
                 upgrade();
             }  else if (obj == btnQuit) {
-               quit();
+                fightManager.stopBattle();
+                // quit();
             } else if (obj == btnInfo) {
                 info();
             }
